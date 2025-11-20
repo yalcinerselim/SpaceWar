@@ -12,7 +12,12 @@ public class SpaceShipController : MonoBehaviour
     
     private Vector2 _moveDirection;
     
+    // SpaceShip objesine bağlı child Turbo objesinin referansı
     [SerializeField] private SpriteRenderer turbo;
+
+    [SerializeField] private MachineGunsController machineGunsController;
+    
+    
 
     private void Awake()
     {
@@ -26,6 +31,9 @@ public class SpaceShipController : MonoBehaviour
         
         _actions.SpaceShip.Sprint.performed += SetSpeed;
         _actions.SpaceShip.Sprint.canceled += SetSpeed;
+        
+        _actions.SpaceShip.Attack.performed += MachineGunAttackHandler;
+        _actions.SpaceShip.Attack.canceled += MachineGunAttackHandler;
         
         turbo.enabled = false;
 
@@ -55,5 +63,10 @@ public class SpaceShipController : MonoBehaviour
             _speed /= 2;
             turbo.enabled = false;
         }
+    }
+
+    private void MachineGunAttackHandler(InputAction.CallbackContext ctx)
+    {
+        machineGunsController.Attacking = ctx.ReadValueAsButton();
     }
 }
