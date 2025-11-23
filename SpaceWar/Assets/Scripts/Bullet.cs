@@ -20,13 +20,12 @@ public class Bullet : MonoBehaviour
 
     private void Move()
     {
-        
         _rb.MovePosition(_rb.position + _bulletSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<BoundaryWall>())
+        if (!other.GetComponent<SpaceShipController>())
         {
             Destroy(gameObject);
         }
