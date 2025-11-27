@@ -10,7 +10,7 @@ public class UnarmoredShip : MonoBehaviour
         _health -= DamageController.Instance.TakeDamage(otherObject, gameObject);
         if (_health <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 
