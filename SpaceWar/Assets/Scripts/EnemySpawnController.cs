@@ -26,7 +26,7 @@ public class EnemySpawnController : MonoBehaviour
 
     private void SpawnEnemyShip(Transform spawnPoint)
     {
-        Instantiate(basicEnemyShipPrefab, spawnPoint.transform.position, Quaternion.Euler(Vector3.zero));
+        Instantiate(basicEnemyShipPrefab, spawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
     }
 
     private Transform GetRandomSpawnPoint()

@@ -12,6 +12,8 @@ public class SpaceShipController : MonoBehaviour
     
     private Vector2 _moveDirection;
     
+    private readonly Vector2 _fireDirection = Vector3.up;
+    
     // SpaceShip objesine bağlı child Turbo objesinin referansı
     [SerializeField] private SpriteRenderer turbo;
 
@@ -38,6 +40,7 @@ public class SpaceShipController : MonoBehaviour
         turbo.enabled = false;
 
         _speed = new Vector2(2,2);
+        machineGunsController.SetBulletDirection(_fireDirection);
     }
 
     private void FixedUpdate()

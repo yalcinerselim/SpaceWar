@@ -6,12 +6,13 @@ public class MachineGunsController : MonoBehaviour
 {
     [SerializeField] private List<RectTransform> machineGuns;
     
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Bullet bulletPrefab;
 
     public bool Attacking { get; set; }
 
     private float _nextFire;
     private float _fireRate;
+    private Vector3 _fireDirection;
 
     private void Start()
     {
@@ -33,7 +34,18 @@ public class MachineGunsController : MonoBehaviour
     {
         foreach (var machineGunPosition in machineGuns)
         {
-            Instantiate(bulletPrefab, machineGunPosition);
+            var bullet = Instantiate(bulletPrefab, machineGunPosition);
+            bullet.bulletDirection = _fireDirection;
         }
+    }
+    
+    public void ChangeAttackingSituation(bool attacking)
+    {
+        Attacking = attacking;
+    }
+
+    public void SetBulletDirection(Vector3 direction)
+    {
+        _fireDirection = direction;
     }
 }
