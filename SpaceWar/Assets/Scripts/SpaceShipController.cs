@@ -19,8 +19,8 @@ public class SpaceShipController : MonoBehaviour
 
     [SerializeField] private MachineGunsController machineGunsController;
     
+    [SerializeField] private SpaceShipHealthController spaceShipHealthController;
     
-
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -71,5 +71,10 @@ public class SpaceShipController : MonoBehaviour
     private void MachineGunAttackHandler(InputAction.CallbackContext ctx)
     {
         machineGunsController.Attacking = ctx.ReadValueAsButton();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        spaceShipHealthController.TakeDamageHandler(other.gameObject);
     }
 }
