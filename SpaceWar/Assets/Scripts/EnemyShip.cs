@@ -1,23 +1,24 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class BasicEnemyShip : UnarmoredShip
+public class EnemyShip : MonoBehaviour, IDamageable
 {
     [SerializeField] private GameObject spaceShip;
     
     [SerializeField] private MachineGunsController machineGunsController;
-    
+
     private Rigidbody _rb;
-    private Vector3 _shipSpeed;
-    private readonly Vector3 _fireDirection = Vector3.down;
+    public int shipSpeed;
+    private Vector3 _moveDirection = Vector3.down;
     
     private readonly float _visualRange = 10f;
-    
+    public int shipHealth;
     
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _shipSpeed = _fireDirection * 2;
-        machineGunsController.SetBulletDirection(_fireDirection);
+        machineGunsController.SetBulletDirection(_moveDirection);
+        _moveDirection *= shipSpeed;
     }
 
     private void Update()
@@ -32,7 +33,7 @@ public class BasicEnemyShip : UnarmoredShip
 
     private void Move()
     {
-        _rb.MovePosition(_rb.position + _shipSpeed * Time.deltaTime);
+        _rb.MovePosition(_rb.position + _moveDirection * Time.deltaTime);
     }
 
     private void Radar()
@@ -50,12 +51,6 @@ public class BasicEnemyShip : UnarmoredShip
             {
                 MachineGunAttackHandler(false);
             }
-            
-            Debug.DrawRay(origin, direction * hitInfo.distance, Color.red);
-        }
-        else
-        {
-            Debug.DrawRay(origin, direction * _visualRange, Color.green);
         }
     }
     
@@ -63,4 +58,16 @@ public class BasicEnemyShip : UnarmoredShip
     {
         machineGunsController.ChangeAttackingSituation(value);
     }
+    
+    public virtual void TakeDamage(int damageAmount)
+    {
+        shipHealth -= damageAmount;
+        if (shipHealth <= 0) Die();
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
 }

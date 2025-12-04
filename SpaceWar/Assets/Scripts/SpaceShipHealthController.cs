@@ -1,5 +1,3 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpaceShipHealthController : MonoBehaviour
@@ -7,19 +5,16 @@ public class SpaceShipHealthController : MonoBehaviour
     private float _maxHealth = 100f;
     private float _currentHealth;
     private float _minHealth = 0f;
-
-    private DamageController _damageController = DamageController.Instance;
-    
     
     private void Start()
     {
         _currentHealth = _maxHealth;
     }
 
-    public void TakeDamageHandler(GameObject bulletObject)
+    public void TakeDamageHandler(int damageAmount)
     {
         
-        _currentHealth -= _damageController.TakeDamage(bulletObject, transform.parent.gameObject);
+        _currentHealth -= damageAmount;
         if (_currentHealth <= _minHealth)
         {
             Debug.Log("Ship Destroyed");

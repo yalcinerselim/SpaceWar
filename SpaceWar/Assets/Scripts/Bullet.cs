@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Bullet : MonoBehaviour
 {
     private Rigidbody _rb;
+    
+    private int _damage = 20;
 
     private Vector3 _bulletSpeed;
     public Vector3 bulletDirection;
@@ -27,9 +27,11 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.GetComponent<SpaceShipController>())
+        IDamageable damageableObj = other.GetComponent<IDamageable>();
+        if (damageableObj != null)
         {
-            Destroy(gameObject);
+            damageableObj.TakeDamage(_damage);
         }
+        Destroy(gameObject);
     }
 }

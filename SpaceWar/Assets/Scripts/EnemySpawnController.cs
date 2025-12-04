@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class EnemySpawnController : MonoBehaviour
 {
     [SerializeField] private List<Transform> spawnPoints;
 
-    [SerializeField] private GameObject basicEnemyShipPrefab;
+    [SerializeField] private List<GameObject> enemyPrefabs;
 
     private float _duration;
     private float _nextSpawn;
@@ -26,7 +27,13 @@ public class EnemySpawnController : MonoBehaviour
 
     private void SpawnEnemyShip(Transform spawnPoint)
     {
-        Instantiate(basicEnemyShipPrefab, spawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
+        Instantiate(GetRandomEnemyPrefab(), spawnPoint.transform.position, Quaternion.Euler(new Vector3(0, 0, 180)));
+    }
+
+    private GameObject GetRandomEnemyPrefab()
+    {
+        var enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        return enemyPrefab;
     }
 
     private Transform GetRandomSpawnPoint()

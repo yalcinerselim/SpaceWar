@@ -267,9 +267,9 @@ GameObject:
   - component: {fileID: 5578724439999113671}
   - component: {fileID: 6804631517355843724}
   - component: {fileID: 1329870033170188263}
-  - component: {fileID: 2317991721627488684}
+  - component: {fileID: 820066835558949635}
   m_Layer: 0
-  m_Name: BasicEnemyShip
+  m_Name: FastEnemyShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -402,7 +402,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!114 &2317991721627488684
+--- !u!114 &820066835558949635
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -416,5 +416,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShip
   spaceShip: {fileID: 7002758605994423594, guid: a64afd3ff3467b048883f58602952cc9, type: 3}
   machineGunsController: {fileID: 3865583821965196581}
-  shipSpeed: 2
+  shipSpeed: 3
   shipHealth: 100

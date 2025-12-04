@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpaceShipController : MonoBehaviour
+public class SpaceShipController : MonoBehaviour, IDamageable
 {
     private InputSystem_Actions _actions;
 
@@ -73,8 +73,19 @@ public class SpaceShipController : MonoBehaviour
         machineGunsController.Attacking = ctx.ReadValueAsButton();
     }
 
+    public void TakeDamage(int damageAmount)
+    {
+        damageAmount -= 10;
+        spaceShipHealthController.TakeDamageHandler(damageAmount);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        spaceShipHealthController.TakeDamageHandler(other.gameObject);
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(1000);
+            TakeDamage(30);
+        }
     }
 }
