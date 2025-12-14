@@ -12,7 +12,7 @@ public class SpaceShipController : MonoBehaviour, IDamageable
     
     private Vector2 _moveDirection;
     
-    private readonly Vector2 _fireDirection = Vector3.up;
+    private Vector3 _fireDirection;
     
     // SpaceShip objesine bağlı child Turbo objesinin referansı
     [SerializeField] private SpriteRenderer turbo;
@@ -21,6 +21,8 @@ public class SpaceShipController : MonoBehaviour, IDamageable
     
     [SerializeField] private SpaceShipHealthController spaceShipHealthController;
     
+    private Camera _mainCam;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -28,6 +30,7 @@ public class SpaceShipController : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        _mainCam = Camera.main;
         _actions = new InputSystem_Actions();
         _actions.SpaceShip.Enable();
         
@@ -39,8 +42,7 @@ public class SpaceShipController : MonoBehaviour, IDamageable
         
         turbo.enabled = false;
 
-        _speed = new Vector2(2,2);
-        machineGunsController.SetBulletDirection(_fireDirection);
+        _speed = new Vector2(3,3);
     }
 
     private void FixedUpdate()
@@ -70,6 +72,12 @@ public class SpaceShipController : MonoBehaviour, IDamageable
 
     private void MachineGunAttackHandler(InputAction.CallbackContext ctx)
     {
+        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        Vector3 mouseWorldPosition = _mainCam.ScreenToWorldPoint(mouseScreenPosition);
+        _fireDirection = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, 0);
+        
+        machineGunsController.SetFireDirection(_fireDirection);
+        
         machineGunsController.Attacking = ctx.ReadValueAsButton();
     }
 

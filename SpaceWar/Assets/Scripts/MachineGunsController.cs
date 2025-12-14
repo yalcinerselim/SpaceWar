@@ -7,6 +7,8 @@ public class MachineGunsController : MonoBehaviour
     [SerializeField] private List<RectTransform> machineGuns;
     
     [SerializeField] private Bullet bulletPrefab;
+    
+    
 
     public bool Attacking { get; set; }
 
@@ -17,7 +19,7 @@ public class MachineGunsController : MonoBehaviour
     private void Start()
     {
         Attacking = false;
-        _fireRate = 0.2f;
+        _fireRate = 0.5f;
         _nextFire = 0.0f;
     }
 
@@ -32,10 +34,21 @@ public class MachineGunsController : MonoBehaviour
 
     private void Fire()
     {
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
         foreach (var machineGunPosition in machineGuns)
         {
             var bullet = Instantiate(bulletPrefab, machineGunPosition);
-            bullet.bulletDirection = _fireDirection;
+            if (gameObject.layer == playerLayer)
+            {
+                bullet.SetBulletLayerMask(LayerMask.NameToLayer("PlayerBullet"));
+            }
+            else if (gameObject.layer == enemyLayer)
+            {
+                bullet.SetBulletLayerMask(LayerMask.NameToLayer("EnemyBullet"));
+                _fireDirection = Vector3.down;
+            }
+            bullet.SetBulletDirection(_fireDirection);
         }
     }
     
@@ -44,8 +57,8 @@ public class MachineGunsController : MonoBehaviour
         Attacking = attacking;
     }
 
-    public void SetBulletDirection(Vector3 direction)
+    public void SetFireDirection(Vector3 direction)
     {
-        _fireDirection = direction;
+        _fireDirection = (direction - transform.position).normalized;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,13 +12,14 @@ public class EnemyShip : MonoBehaviour, IDamageable
     public int shipSpeed;
     private Vector3 _moveDirection = Vector3.down;
     
-    private readonly float _visualRange = 10f;
+    private readonly float _visualRange = 30f;
     public int shipHealth;
+    
+    public LayerMask hitLayers;
     
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        machineGunsController.SetBulletDirection(_moveDirection);
         _moveDirection *= shipSpeed;
     }
 
@@ -40,17 +42,17 @@ public class EnemyShip : MonoBehaviour, IDamageable
     {
         Vector3 origin = transform.position;
         Vector3 direction = transform.up;
-
-        if (Physics.Raycast(origin, direction, out var hitInfo, _visualRange))
+        
+        if (Physics.Raycast(transform.position, direction, out var hitInfo, _visualRange, hitLayers))
         {
-            if(hitInfo.collider.name == spaceShip.name)
-            {
-                MachineGunAttackHandler(true);
-            }
-            else
-            {
-                MachineGunAttackHandler(false);
-            }
+            MachineGunAttackHandler(true);
+            Debug.DrawRay(origin, direction * hitInfo.distance, Color.red);
+        }
+        else
+        {
+            // Bir şeye çarpmıyorsa, ışını maksimum mesafeye kadar yeşil çiz
+            Debug.DrawRay(origin, direction * _visualRange, Color.green);
+            MachineGunAttackHandler(false);
         }
     }
     
@@ -70,4 +72,11 @@ public class EnemyShip : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<LethalBoundary>())
+        {
+            Die();
+        }
+    }
 }

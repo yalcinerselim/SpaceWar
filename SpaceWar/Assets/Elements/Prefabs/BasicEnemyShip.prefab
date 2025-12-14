@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1854593820362004511}
   - component: {fileID: 3865583821965196581}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MachineGuns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 6804631517355843724}
   - component: {fileID: 1329870033170188263}
   - component: {fileID: 2317991721627488684}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BasicEnemyShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +284,7 @@ RectTransform:
   m_GameObject: {fileID: 8251649050517562428}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3711482698352988204}
@@ -418,3 +418,6 @@ MonoBehaviour:
   machineGunsController: {fileID: 3865583821965196581}
   shipSpeed: 2
   shipHealth: 100
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 64

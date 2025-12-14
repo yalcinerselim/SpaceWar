@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4554041729972752242}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MachineGun (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8438190966464281432}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MachineGun (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 5206855934109922845}
   - component: {fileID: 7267692403718079559}
   - component: {fileID: 7479732755857472245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SpaceShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 898608629275645921}
   - component: {fileID: 2334048861318356630}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Turbo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6573783762567750387}
   - component: {fileID: 7147582136502707978}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HealthController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7335340759726502868}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MachineGun (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7743695328367427465}
   - component: {fileID: 7602309539411224333}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MachineGuns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
