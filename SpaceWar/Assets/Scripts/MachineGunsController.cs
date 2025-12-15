@@ -1,64 +1,85 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MachineGunsController : MonoBehaviour
 {
-    [SerializeField] private List<RectTransform> machineGuns;
-    
-    [SerializeField] private Bullet bulletPrefab;
-    
-    
+    [Header("Components")]
+    [SerializeField] private List<Transform> machineGuns;
 
     public bool Attacking { get; set; }
 
-    private float _nextFire;
-    private float _fireRate;
+    private float _fireRate; // Değeri dışarıdan alacak
+    private float _nextFireTime;
     private Vector3 _fireDirection;
+    
+    // Layer Caching
+    private int _playerLayer;
+    private int _enemyLayer;
+    private int _playerBulletLayer;
+    private int _enemyBulletLayer;
+    private int _myBulletLayer;
+
+    private void Awake()
+    {
+        _playerLayer = LayerMask.NameToLayer("Player");
+        _enemyLayer = LayerMask.NameToLayer("Enemy");
+        _playerBulletLayer = LayerMask.NameToLayer("PlayerBullet");
+        _enemyBulletLayer = LayerMask.NameToLayer("EnemyBullet");
+    }
 
     private void Start()
     {
         Attacking = false;
-        _fireRate = 0.5f;
-        _nextFire = 0.0f;
+        
+        if (gameObject.layer == _playerLayer)
+        {
+            _myBulletLayer = _playerBulletLayer;
+        }
+        else if (gameObject.layer == _enemyLayer)
+        {
+            _myBulletLayer = _enemyBulletLayer;
+            _fireDirection = Vector3.down; 
+        }
+    }
+    
+    public void Configure(float newFireRate)
+    {
+        _fireRate = newFireRate;
     }
 
     private void Update()
     {
-        if (Attacking && Time.time > _nextFire)
+        if (Attacking && Time.time > _nextFireTime)
         {
-            _nextFire = Time.time + _fireRate;
+            _nextFireTime = Time.time + _fireRate;
             Fire();
         }
     }
 
     private void Fire()
     {
-        int playerLayer = LayerMask.NameToLayer("Player");
-        int enemyLayer = LayerMask.NameToLayer("Enemy");
-        foreach (var machineGunPosition in machineGuns)
+        foreach (var gunPos in machineGuns)
         {
-            var bullet = Instantiate(bulletPrefab, machineGunPosition);
-            if (gameObject.layer == playerLayer)
+            Bullet bullet = BulletPoolManager.Instance.GetBullet();
+
+            if (bullet != null)
             {
-                bullet.SetBulletLayerMask(LayerMask.NameToLayer("PlayerBullet"));
+                // 2. Mermiyi namlunun ucuna ışınla
+                bullet.transform.position = gunPos.position;
+                bullet.transform.rotation = Quaternion.identity;
+                
+                // 3. Mermiyi aktif et (Havuz kapalı vermiş olabilir)
+                bullet.gameObject.SetActive(true);
+
+                // 4. Ayarları yap (Eski kodun aynısı)
+                bullet.SetBulletLayerMask(_myBulletLayer);
+                bullet.SetBulletDirection(_fireDirection);
             }
-            else if (gameObject.layer == enemyLayer)
-            {
-                bullet.SetBulletLayerMask(LayerMask.NameToLayer("EnemyBullet"));
-                _fireDirection = Vector3.down;
-            }
-            bullet.SetBulletDirection(_fireDirection);
         }
     }
     
-    public void ChangeAttackingSituation(bool attacking)
+    public void SetFireDirection(Vector3 targetPosition)
     {
-        Attacking = attacking;
-    }
-
-    public void SetFireDirection(Vector3 direction)
-    {
-        _fireDirection = (direction - transform.position).normalized;
+        _fireDirection = (targetPosition - transform.position).normalized;
     }
 }

@@ -1,90 +1,120 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class SpaceShipController : MonoBehaviour, IDamageable
 {
-    private InputSystem_Actions _actions;
-
-    private Rigidbody _rb;
-
-    private Vector2 _speed;
-    
-    private Vector2 _moveDirection;
-    
-    private Vector3 _fireDirection;
-    
-    // SpaceShip objesine bağlı child Turbo objesinin referansı
-    [SerializeField] private SpriteRenderer turbo;
-
+    [Header("Dependencies")]
+    [SerializeField] private ShipStatsSO stats; // Model
+    [SerializeField] private SpaceShipVisuals visuals; // View
     [SerializeField] private MachineGunsController machineGunsController;
-    
-    [SerializeField] private SpaceShipHealthController spaceShipHealthController;
-    
+    [SerializeField] private SpaceShipHealthController healthController;
+
+    private InputSystem_Actions _actions;
+    private Rigidbody _rb;
     private Camera _mainCam;
+    private Vector2 _moveInput;
+    private bool _isSprinting;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _mainCam = Camera.main;
+        
+        // Input Actions'ı burada new'lemek yerine, genelde global bir InputManager'dan almak daha iyidir
+        // ama şimdilik bu yapını bozmuyorum.
+        _actions = new InputSystem_Actions();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _mainCam = Camera.main;
-        _actions = new InputSystem_Actions();
         _actions.SpaceShip.Enable();
+        // Event abonelikleri
+        _actions.SpaceShip.Sprint.performed += OnSprintStarted;
+        _actions.SpaceShip.Sprint.canceled += OnSprintEnded;
+        _actions.SpaceShip.Attack.performed += OnAttackStarted;
+        _actions.SpaceShip.Attack.canceled += OnAttackEnded;
         
-        _actions.SpaceShip.Sprint.performed += SetSpeed;
-        _actions.SpaceShip.Sprint.canceled += SetSpeed;
-        
-        _actions.SpaceShip.Attack.performed += MachineGunAttackHandler;
-        _actions.SpaceShip.Attack.canceled += MachineGunAttackHandler;
-        
-        turbo.enabled = false;
+        machineGunsController.Configure(stats.FireRate);
+    }
 
-        _speed = new Vector2(3,3);
+    private void OnDisable()
+    {
+        // Event aboneliklerini iptal etmek (Memory Leak önlemek için şart)
+        _actions.SpaceShip.Sprint.performed -= OnSprintStarted;
+        _actions.SpaceShip.Sprint.canceled -= OnSprintEnded;
+        _actions.SpaceShip.Attack.performed -= OnAttackStarted;
+        _actions.SpaceShip.Attack.canceled -= OnAttackEnded;
+        _actions.SpaceShip.Disable();
     }
 
     private void FixedUpdate()
     {
-        Movement();
+        HandleMovement();
     }
 
-    private void Movement()
+    private void HandleMovement()
     {
-        _moveDirection = _actions.SpaceShip.Move.ReadValue<Vector2>() * _speed;
-        _rb.MovePosition(_rb.position + new Vector3(_moveDirection.x, _moveDirection.y, 0) * Time.deltaTime);
+        // Input oku
+        _moveInput = _actions.SpaceShip.Move.ReadValue<Vector2>();
+
+        // Hız hesapla (Model'den gelen veriyi kullan)
+        float currentSpeed = _isSprinting ? stats.BaseSpeed * stats.SprintMultiplier : stats.BaseSpeed;
+
+        // Fiziği uygula
+        Vector3 displacement = new Vector3(_moveInput.x, _moveInput.y, 0) * (currentSpeed * Time.fixedDeltaTime);
+        _rb.MovePosition(_rb.position + displacement);
     }
 
-    private void SetSpeed(InputAction.CallbackContext ctx)
+    #region Input Handlers
+    
+    private void OnSprintStarted(InputAction.CallbackContext ctx)
     {
-        if (ctx.ReadValueAsButton())
-        {
-            _speed *= 2;
-            turbo.enabled = true;
-        }
-        else
-        {
-            _speed /= 2;
-            turbo.enabled = false;
-        }
+        _isSprinting = true;
+        visuals.SetTurboVisual(true); // View'a emir ver
     }
 
-    private void MachineGunAttackHandler(InputAction.CallbackContext ctx)
+    private void OnSprintEnded(InputAction.CallbackContext ctx)
     {
-        Vector2 mouseScreenPosition = Mouse.current.position.ReadValue();
+        _isSprinting = false;
+        visuals.SetTurboVisual(false); // View'a emir ver
+    }
+
+    private void OnAttackStarted(InputAction.CallbackContext ctx)
+    {
+        UpdateFireDirection(); // Ateş etmeden önce yönü güncelle
+        machineGunsController.Attacking = true;
+    }
+
+    private void OnAttackEnded(InputAction.CallbackContext ctx)
+    {
+        machineGunsController.Attacking = false;
+    }
+
+    #endregion
+
+    private void UpdateFireDirection()
+    {
+        Vector3 mouseScreenPosition = Mouse.current.position.ReadValue();
+        
+        // ÖNEMLİ DÜZELTME: Kameranın oyun düzlemine olan uzaklığını Z olarak veriyoruz.
+        // Kameranın z=-10'da, geminin z=0'da olduğunu varsayıyorum.
+        mouseScreenPosition.z = -_mainCam.transform.position.z; 
+        
         Vector3 mouseWorldPosition = _mainCam.ScreenToWorldPoint(mouseScreenPosition);
-        _fireDirection = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, 0);
         
-        machineGunsController.SetFireDirection(_fireDirection);
+        // Z eksenini 0'a sabitliyoruz (2D oynanış için)
+        Vector3 targetPosition = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, 0);
         
-        machineGunsController.Attacking = ctx.ReadValueAsButton();
+        machineGunsController.SetFireDirection(targetPosition);
     }
 
+    // IDamageable Implementation
     public void TakeDamage(int damageAmount)
     {
-        damageAmount -= 10;
-        spaceShipHealthController.TakeDamageHandler(damageAmount);
+        // Model'den gelen zırh verisini kullan (Mathf.Max ile hasarın negatif olmasını engelle)
+        int effectiveDamage = Mathf.Max(0, damageAmount - stats.Armor);
+        healthController.TakeDamageHandler(effectiveDamage);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -92,8 +122,8 @@ public class SpaceShipController : MonoBehaviour, IDamageable
         IDamageable damageable = other.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.TakeDamage(1000);
-            TakeDamage(30);
+            // Model'den gelen çarpışma hasarı verilerini kullan
+            damageable.TakeDamage(stats.CollisionEnemyDamage);
         }
     }
 }
