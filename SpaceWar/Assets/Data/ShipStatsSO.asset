@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3382d901285b977449b6c7c74d36aa1a, type: 3}
   m_Name: ShipStatsSO
   m_EditorClassIdentifier: Assembly-CSharp::ShipStatsSO
+  Health: 100
   BaseSpeed: 3
   SprintMultiplier: 2
-  Armor: 10
+  ArmorValue: 10
   CollisionEnemyDamage: 1000
   FireRate: 0.25

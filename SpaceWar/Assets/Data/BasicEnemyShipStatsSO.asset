@@ -14,8 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShipStatsSO
   Health: 100
   BaseSpeed: 2
-  FastSpeed: 4.5
-  LightArmor: 5
-  HeavyArmor: 15
+  ArmorValue: 0
   FireRate: 0.5
   CollisionDamage: 30
