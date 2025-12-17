@@ -1,21 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class EnemyShip : MonoBehaviour, IDamageable
+public class EnemyShip : DestructibleObject
 {
-    // Havuz yöneticisinin dinleyeceği event
-    public UnityAction<EnemyShip> OnEnemyKilled;
-
+    public UnityAction<EnemyShip> OnKilled;
+    
     [Header("Components")]
     [SerializeField] private MachineGunsController machineGunsController;
     [SerializeField] private EnemyShipStatsSO enemyShipStatsSo;
     
-
     private Rigidbody _rb;
-    private int _currentHealth;
     
     // Raycast için ayarlar
-    private readonly float _visualRange = 20f;
+    private readonly float _visualRange = 30f;
     [SerializeField] private LayerMask detectionLayer;
 
     private void Awake()
@@ -26,8 +24,7 @@ public class EnemyShip : MonoBehaviour, IDamageable
     // KRİTİK BÖLÜM: Object Pooling için Resetleme Alanı
     private void OnEnable()
     {
-        // 1. Canı Fulle (ScriptableObject'ten al)
-        _currentHealth = enemyShipStatsSo.Health;
+        InitializeHealth(enemyShipStatsSo.Health, enemyShipStatsSo.ArmorValue);
         
         // 2. Saldırıyı durdur (Önceki hayattan kalma bir emir varsa iptal et)
         machineGunsController.Attacking = false;
@@ -55,9 +52,6 @@ public class EnemyShip : MonoBehaviour, IDamageable
 
     private void HandleMovement()
     {
-        // Hızı her karede hesaplıyoruz ki SO'dan hızı değiştirirsen oyun oynarken de değişsin.
-        // Vector3.down, düşmanın aşağı gideceğini varsayar.
-        // Eğer gemi 180 derece dönükse "transform.up" da kullanabilirsin (aşağı bakıyor olur).
         Vector3 movement = Vector3.down * (enemyShipStatsSo.BaseSpeed * Time.fixedDeltaTime);
         _rb.MovePosition(_rb.position + movement);
     }
@@ -67,8 +61,6 @@ public class EnemyShip : MonoBehaviour, IDamageable
         // Işın başlangıcı ve yönü
         Vector3 origin = transform.position;
         
-        // DİKKAT: Eğer gemi görsel olarak 180 derece dönükse, 
-        // transform.up AŞAĞIYI (oyuncuya doğru) gösterir. Bu doğru.
         Vector3 direction = transform.up; 
         
         // Physics.Raycast bool döner, if içine alabiliriz
@@ -94,21 +86,11 @@ public class EnemyShip : MonoBehaviour, IDamageable
             #endif
         }
     }
-
-    // IDamageable implementation
-    public void TakeDamage(int damageAmount)
-    {
-        _currentHealth -= damageAmount;
-        if (_currentHealth <= 0)
-        {
-            Die();
-        }
-    }
-
-    private void Die()
+    
+    protected override void Die()
     {
         // Beni kim dinliyorsa (PoolManager) ona haber ver
-        OnEnemyKilled?.Invoke(this);
+        OnKilled?.Invoke(this);
         
         // Asla Destroy yok! Kendini kapat.
         gameObject.SetActive(false);
@@ -116,12 +98,16 @@ public class EnemyShip : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter(Collider other)
     {
+        IDamageable damageable = other.GetComponent<IDamageable>();
         // Duvara veya "Öldüren Sınıra" çarpınca
         if (other.GetComponent<LethalBoundary>())
         {
-            Die();
+            TakeDamage(1000);
         }
-        // Oyuncuya çarparsa (Player scriptinde IDamageable varsa)
-        // Bu kısım Player scriptinde yönetilebilir veya burada eklenebilir.
+        else if (damageable != null)
+        {
+            // Model'den gelen çarpışma hasarı verilerini kullan
+            damageable.TakeDamage(enemyShipStatsSo.CollisionDamage);
+        }
     }
 }

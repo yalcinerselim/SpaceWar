@@ -97,7 +97,7 @@ Transform:
   m_Children:
   - {fileID: 898608629275645921}
   - {fileID: 7743695328367427465}
-  - {fileID: 6573783762567750387}
+  - {fileID: 8443523724973523376}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6635698211042963664
@@ -221,7 +221,6 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 071f4fd846a7d0c4592147aca2190a68, type: 2}
   visuals: {fileID: 8443138471836063183}
   machineGunsController: {fileID: 7602309539411224333}
-  healthController: {fileID: 7147582136502707978}
 --- !u!1 &7158999757710576009
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,50 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceShipVisuals
   turboSprite: {fileID: 2334048861318356630}
---- !u!1 &7768770708933223844
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6573783762567750387}
-  - component: {fileID: 7147582136502707978}
-  m_Layer: 6
-  m_Name: HealthController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6573783762567750387
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768770708933223844}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 165339234099644153}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7147582136502707978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768770708933223844}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0de2c60f5ad69074796e93ed691bd435, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpaceShipHealthController
 --- !u!1 &8822323157412032929
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,4 +407,150 @@ MonoBehaviour:
   - {fileID: 8438190966464281432}
   - {fileID: 7335340759726502868}
   - {fileID: 4554041729972752242}
-  bulletPrefab: {fileID: 3692222239790991341, guid: d9b0bc0395c25df44a75d81e94dc07f6, type: 3}
+--- !u!1001 &4982549756077881865
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 165339234099644153}
+    m_Modifications:
+    - target: {fileID: 1929112728974977012, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.085
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.00266
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5828141480314460634, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5924956357789664078, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: m_Name
+      value: HealthBarCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7530855216750487563, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      propertyPath: destructibleObject
+      value: 
+      objectReference: {fileID: 7479732755857472245}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5924956357789664078, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6045579295485962464}
+  m_SourcePrefab: {fileID: 100100000, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+--- !u!1 &1665275166374361415 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5924956357789664078, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+  m_PrefabInstance: {fileID: 4982549756077881865}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6045579295485962464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1665275166374361415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01973d421adccc4db2cd3b295933f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WorldSpaceHealthBar
+  healthBarSlider: {fileID: 3735461377545707915}
+  destructibleObject: {fileID: 0}
+--- !u!114 &3735461377545707915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8571076654908480386, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+  m_PrefabInstance: {fileID: 4982549756077881865}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!224 &8443523724973523376 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3461296195867671481, guid: 7162495dd03e1b143ba84835f82dcfa4, type: 3}
+  m_PrefabInstance: {fileID: 4982549756077881865}
+  m_PrefabAsset: {fileID: 0}

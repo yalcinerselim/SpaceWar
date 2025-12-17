@@ -10,5 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d656bc4433f06b24ca1f209b1f852680, type: 3}
-  m_Name: EnemyShipStatsSO
+  m_Name: FastEnemyShipStatsSO
   m_EditorClassIdentifier: Assembly-CSharp::EnemyShipStatsSO
+  Health: 100
+  BaseSpeed: 3.5
+  LightArmor: 5
+  HeavyArmor: 15
+  FireRate: 0.5
+  CollisionDamage: 30

@@ -15,5 +15,5 @@ MonoBehaviour:
   BaseSpeed: 3
   SprintMultiplier: 2
   Armor: 10
-  CollisionSelfDamage: 30
   CollisionEnemyDamage: 1000
+  FireRate: 0.25

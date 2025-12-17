@@ -50,7 +50,7 @@ public class EnemyPoolManager : MonoBehaviour
         enemy.gameObject.SetActive(false);
         
         // Düşman öldüğünde havuza dönmesi için abone oluyoruz
-        enemy.OnEnemyKilled += ReturnEnemyToPool;
+        enemy.OnKilled += ReturnEnemyToPool;
         
         return enemy;
     }

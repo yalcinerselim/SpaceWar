@@ -2,13 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SpaceShipController : MonoBehaviour, IDamageable
+public class SpaceShipController : DestructibleObject
 {
     [Header("Dependencies")]
     [SerializeField] private ShipStatsSO stats; // Model
     [SerializeField] private SpaceShipVisuals visuals; // View
     [SerializeField] private MachineGunsController machineGunsController;
-    [SerializeField] private SpaceShipHealthController healthController;
 
     private InputSystem_Actions _actions;
     private Rigidbody _rb;
@@ -28,6 +27,7 @@ public class SpaceShipController : MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
+        InitializeHealth(stats.Health, stats.ArmorValue);
         _actions.SpaceShip.Enable();
         // Event abonelikleri
         _actions.SpaceShip.Sprint.performed += OnSprintStarted;
@@ -109,12 +109,9 @@ public class SpaceShipController : MonoBehaviour, IDamageable
         machineGunsController.SetFireDirection(targetPosition);
     }
 
-    // IDamageable Implementation
-    public void TakeDamage(int damageAmount)
+    protected override void Die()
     {
-        // Model'den gelen zırh verisini kullan (Mathf.Max ile hasarın negatif olmasını engelle)
-        int effectiveDamage = Mathf.Max(0, damageAmount - stats.Armor);
-        healthController.TakeDamageHandler(effectiveDamage);
+        Debug.Log("Space Ship Destroyed");
     }
 
     private void OnTriggerEnter(Collider other)
